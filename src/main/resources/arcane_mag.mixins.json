@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.zzdzt.arcanemag.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "arcane_mag.refmap.json",
+  "mixins": [
+    "ArcaneAnvilMenuMixin",
+    "AttachmentPropertyManagerMixin",
+    "PreCastTargetHelperMixin",
+    "SpellManaCostMixin"
+  ],
+  "client": [
+    "SpellBarOverlayMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
