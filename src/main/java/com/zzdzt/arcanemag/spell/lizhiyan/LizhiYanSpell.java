@@ -93,7 +93,7 @@ public class LizhiYanSpell extends AbstractSpell {
 
     @Override
     public int getRecastCount(int spellLevel, @Nullable LivingEntity entity) {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -104,17 +104,9 @@ public class LizhiYanSpell extends AbstractSpell {
     @Override
     public void onRecastFinished(ServerPlayer serverPlayer, RecastInstance recastInstance,
                                  RecastResult recastResult, ICastDataSerializable castDataSerializable) {
-        // 清理召唤物
-        if (castDataSerializable instanceof SummonedEntitiesCastData summonedData) {
-            Set<UUID> uuids = summonedData.getSummons();
-            for (UUID uuid : uuids) {
-                if (serverPlayer.level() instanceof ServerLevel serverLevel) {
-                    Entity existing = serverLevel.getEntity(uuid);
-                    if (existing instanceof LizhiYanEntity sword) {
-                        sword.onUnSummon();
-                    }
-                }
-            }
+        // 清理召唤物（超时或玩家主动消除时触发）
+        if (SummonManager.recastFinishedHelper(serverPlayer, recastInstance, recastResult, castDataSerializable)) {
+            super.onRecastFinished(serverPlayer, recastInstance, recastResult, castDataSerializable);
         }
     }
 
@@ -123,54 +115,40 @@ public class LizhiYanSpell extends AbstractSpell {
                        CastSource castSource, MagicData playerMagicData) {
         PlayerRecasts recasts = playerMagicData.getPlayerRecasts();
 
-        // 清理已存在的旧召唤物
-        RecastInstance existingRecast = recasts.getRecastInstance(this.getSpellId());
-        if (existingRecast != null) {
-            ICastDataSerializable castData = existingRecast.getCastData();
-            if (castData instanceof SummonedEntitiesCastData summonedData) {
-                Set<UUID> uuids = summonedData.getSummons();
-                for (UUID uuid : uuids) {
-                    if (level instanceof ServerLevel serverLevel) {
-                        Entity existing = serverLevel.getEntity(uuid);
-                        if (existing instanceof LizhiYanEntity oldSword) {
-                            oldSword.onUnSummon();
-                        }
-                    }
-                }
+        if (!recasts.hasRecastForSpell(this)) {
+            // 首次施放：召唤飞剑 + 创建 RecastInstance 管理生命周期
+            SummonedEntitiesCastData summonedData = new SummonedEntitiesCastData();
+            int summonTime = 20 * 30; // 30秒
+            float damage = getBaseDamage(spellLevel, entity);
+            int count = 3;
+
+            for (int i = 0; i < count; i++) {
+                LizhiYanEntity sword = new LizhiYanEntity(
+                    EntityRegistry.LIZHI_YAN.get(),
+                    level,
+                    entity,
+                    i,
+                    count
+                );
+                sword.setBaseDamage(damage);
+                sword.setRange(20.0f);
+
+                level.addFreshEntity(sword);
+                SummonManager.initSummon(entity, sword, summonTime, summonedData);
             }
-            recasts.removeRecast(existingRecast, RecastResult.USED_ALL_RECASTS);
-        }
 
-        // 创建新的召唤物
-        SummonedEntitiesCastData summonedData = new SummonedEntitiesCastData();
-        int summonTime = 20 * 30; // 30秒
-        float damage = getBaseDamage(spellLevel, entity);
-        int count = 3;
-
-        for (int i = 0; i < count; i++) {
-            LizhiYanEntity sword = new LizhiYanEntity(
-                EntityRegistry.LIZHI_YAN.get(),
-                level,
-                entity,
-                i,
-                count
+            RecastInstance recastInstance = new RecastInstance(
+                getSpellId(),
+                spellLevel,
+                getRecastCount(spellLevel, entity),
+                summonTime,
+                castSource,
+                summonedData
             );
-            sword.setBaseDamage(damage);
-            sword.setRange(20.0f);
-
-            level.addFreshEntity(sword);
-            SummonManager.initSummon(entity, sword, summonTime, summonedData);
+            recasts.addRecast(recastInstance, playerMagicData);
         }
-
-        RecastInstance recastInstance = new RecastInstance(
-            getSpellId(),
-            spellLevel,
-            getRecastCount(spellLevel, entity),
-            summonTime,
-            castSource,
-            summonedData
-        );
-        recasts.addRecast(recastInstance, playerMagicData);
+        // 第二次按下时：hasRecastForSpell=true → 不执行任何操作
+        // castSpell() 内部 decrementRecastCount → remaining=0 → onRecastFinished → 消除飞剑
 
         super.onCast(level, spellLevel, entity, castSource, playerMagicData);
     }

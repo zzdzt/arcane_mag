@@ -11,6 +11,7 @@ import io.redspace.ironsspellbooks.api.spells.CastType;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
@@ -87,14 +88,18 @@ public class CastKeyHandler {
             CastType castType = spellData.getSpell().getCastType();
 
             // 客户端充能检查（仅提示，最终检查在服务端）
+            // Recast 活跃时跳过充能检查（recast 不消耗充能）
             ItemStack magazine = MagazineSpellHelper.getMagazineAttachment(mainHand);
-            if (magazine != null) {
+            boolean hasActiveRecast = io.redspace.ironsspellbooks.player.ClientMagicData
+                .getRecasts().hasRecastForSpell(spellData.getSpell());
+            if (magazine != null && !hasActiveRecast) {
                 boolean canCast = ModChargeData.hasStacks(magazine) || ModChargeData.isFull(magazine);
                 if (!canCast) {
                     // 充能不足，显示提示（不发送网络包）
                     if (!wasPressed && pressed) {
                         mc.player.displayClientMessage(
-                            Component.literal("§c充能不足"),
+                            Component.translatable("message.arcane_mag.insufficient_charge")
+                                .withStyle(ChatFormatting.RED),
                             true
                         );
                     }

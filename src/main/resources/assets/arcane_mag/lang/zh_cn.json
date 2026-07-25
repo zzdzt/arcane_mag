@@ -24,6 +24,10 @@
   "tooltip.arcane_mag.magazine_type": "§a[弹夹] 可注入法术",
   "tooltip.arcane_mag.attachment_type": "§7[%s] 仅可添加升级法球",
   "tooltip.arcane_mag.upgrades_title": "=== 已适用加成 ===",
+  "tooltip.arcane_mag.orb_entry": "  • %s +%s%%",
+  "tooltip.arcane_mag.orb_total": "  [共 %s 颗法球]",
+
+  "message.arcane_mag.insufficient_charge": "充能不足",
 
   "jei.arcane_mag.arcane_anvil.title": "奥术铁砧",
   "jei.arcane_mag.spell_inscribe.hint": "任意法术卷轴",
@@ -124,5 +128,55 @@
   "spell.arcane_mag.frost_imbued_bullet.effect": "冻结目标%s秒",
 
   "spell.arcane_mag.imbued_bullet.info.conversion": "伤害比例: %s%%",
-  "spell.arcane_mag.info.duration": "持续时间: %ss"
+  "spell.arcane_mag.info.duration": "持续时间: %ss",
+  
+  "enchantment.arcane_mag.auto_release": "充能随放",
+  "enchantment.arcane_mag.charge_stacks": "储能",
+  "enchantment.arcane_mag.charge_overdrive": "过载",
+  "enchantment.arcane_mag.charge_passive": "被动充能",
+  "enchantment.arcane_mag.ammo_retention": "节约风气",
+  "enchantment.arcane_mag.arcane_focus": "奥术聚焦",
+  "enchantment.arcane_mag.multi_trigger": "多重扳机",
+  "enchantment.arcane_mag.mana_magazine": "魔力弹匣",
+  "enchantment.arcane_mag.kuang_yan": "狂宴",
+  "enchantment.arcane_mag.overflow": "充盈",
+  "enchantment.arcane_mag.for_the_people": "我为人人",
+  "enchantment.arcane_mag.dry_mana_frenzy": "涸法狂击",
+  "enchantment.arcane_mag.shadow_reload": "暗隐装填",
+  "enchantment.arcane_mag.mana_hawk_eye": "法力鹰眼",
+  "enchantment.arcane_mag.guidance_amplify": "引导增幅",
+  "enchantment.arcane_mag.spell_resonance": "法术共鸣",
+  "enchantment.arcane_mag.fire_frenzy": "火力狂热",
+  "enchantment.arcane_mag.arcane_frenzy": "奥术狂热",
+  "enchantment.arcane_mag.pellet_burst": "爆破弹丸",
+  "enchantment.arcane_mag.brace": "蓄势",
+  "enchantment.arcane_mag.unstable_charge": "不稳定充能",
+
+  "enchantment.arcane_mag.auto_release.desc": "弹匣充能充满且命中实体时，自动以该实体为目标释放铭刻法术。",
+  "enchantment.arcane_mag.charge_stacks.desc": "充能满后继续命中，溢出的充能转化为额外释放层数。仅可刻于弹匣。",
+  "enchantment.arcane_mag.charge_overdrive.desc": "充能满后继续命中，溢出累积达阈值后进入过载，使短时间内下次施法获得法术强度加成。仅可刻于弹匣。",
+  "enchantment.arcane_mag.charge_passive.desc": "持枪时自动缓慢恢复充能，无需造成伤害。仅可刻于弹匣。",
+  "enchantment.arcane_mag.ammo_retention.desc": "攻击时有概率不消耗弹药，等级越高保留概率越高。",
+  "enchantment.arcane_mag.arcane_focus.desc": "使用枪械释放法术后，接下来发射的子弹会获得爆头倍率提升；等级越高子弹数越多。",
+  "enchantment.arcane_mag.multi_trigger.desc": "每次扣扳机会额外射击。仅可刻于枪口。",
+  "enchantment.arcane_mag.mana_magazine.desc": "弹匣打空时不换弹，支付法力可继续射击。仅可刻于弹匣。",
+  "enchantment.arcane_mag.kuang_yan.desc": "爆头击杀目标时回复一定比例的法力。",
+  "enchantment.arcane_mag.overflow.desc": "弹匣法术充能充满时，枪械获得伤害与射速增益，持续 10 秒或直至法术释放。",
+  "enchantment.arcane_mag.for_the_people.desc": "6 秒内爆头命中 3 名不同敌人后，获得 10 秒法术强度加成（可刷新）。",
+  "enchantment.arcane_mag.dry_mana_frenzy.desc": "当法力维持在较低区间时，获得伤害与射速增益。",
+  "enchantment.arcane_mag.shadow_reload.desc": "换弹时获得真实隐身。仅可刻于弹匣。",
+  "enchantment.arcane_mag.mana_hawk_eye.desc": "开镜期间消耗法力，累计消耗法力转化为射击伤害（存在上限），退出开镜清零。仅可刻于瞄具。",
+  "enchantment.arcane_mag.guidance_amplify.desc": "释放持续型法术期间，枪械获得伤害与射速增益。",
+  "enchantment.arcane_mag.spell_resonance.desc": "子弹命中时额外附加受附魔等级和弹匣法术等级影响的伤害。仅可刻于枪口。",
+  "enchantment.arcane_mag.fire_frenzy.desc": "持续战斗 12 秒后，枪械伤害增加；3 秒内无战斗行为则失效。仅可刻于枪口。",
+  "enchantment.arcane_mag.arcane_frenzy.desc": "持续战斗 12 秒后，法术强度增加；3 秒内无战斗行为则失效。仅可刻于枪口。",
+  "enchantment.arcane_mag.pellet_burst.desc": "累计命中达阈值后，消耗弹匣法术当前充能的一半，以命中点为中心造成范围伤害。等级越高所需命中阈值越低。仅可刻于枪口。",
+  "enchantment.arcane_mag.brace.desc": "非战斗状态 3 秒后开始积累双蓄势。枪械攻击消耗枪械蓄势增加伤害，施法消耗法术蓄势增加法术伤害，切枪丢失全部层数。仅可刻于枪托。",
+  "enchantment.arcane_mag.unstable_charge.desc": "开火命中获得的充能值随机化。仅可刻于弹匣。",
+
+  "uei.category.arcane_perk": "枪械配件",
+
+
+  "blank_key": "占位空键"
+
 }

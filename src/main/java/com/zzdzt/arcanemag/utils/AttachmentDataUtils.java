@@ -15,11 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * 枪械配件数据读写工具
@@ -35,27 +31,7 @@ public final class AttachmentDataUtils {
     public static final String NBT_ORB_TYPE = "Type";
     public static final String NBT_ORB_COUNT = "Count";
 
-    private static final Gson GSON = new Gson();
-
     private AttachmentDataUtils() {}
-
-    /**
-     * JSON 中每个法术的机制配置项
-     */
-    public static class MechanismEntry {
-        boolean overdrive;
-        boolean stacks;
-        @com.google.gson.annotations.SerializedName("passive_rate")
-        double passiveRate = 0.0;
-
-        public MechanismEntry() {}
-
-        public MechanismEntry(boolean overdrive, boolean stacks, double passiveRate) {
-            this.overdrive = overdrive;
-            this.stacks = stacks;
-            this.passiveRate = passiveRate;
-        }
-    }
 
     // 类型判断 
 
@@ -105,8 +81,10 @@ public final class AttachmentDataUtils {
     }
 
     /**
-     * 根据法术冷却时间计算充能条上限，同时写入机制允许标记
+     * 根据法术冷却时间计算充能条上限
      * chargeMax = baseChargeMax * (spellCooldownSeconds / cdReferenceSeconds)
+     *
+     * 充能机制（stacks/passive/overdrive）由弹匣附魔决定，铭刻时不再写入机制标记。
      */
     public static void calculateAndSetChargeMax(ItemStack stack, AbstractSpell spell) {
         try {
@@ -119,36 +97,9 @@ public final class AttachmentDataUtils {
             ModChargeData.setCharge(stack, 0.0);
             ModChargeData.setStacks(stack, 0);
             ModChargeData.setOverdriveStacks(stack, 0);
-
-            // 从数据包读取机制权限并写入 NBT
-            String spellKey = spell.getSpellResource().toString();
-            MechanismEntry entry = ChargeMechanismLoader.getMechanism(spellKey);
-            com.zzdzt.arcanemag.ArcaneMag.LOGGER.debug(
-                "[ArcaneMag] Inscribing spell={}, key={}, entry={} (overdrive={}, stacks={}, passive={})",
-                spell.getSpellName(), spellKey,
-                entry != null ? "FOUND" : "NULL",
-                entry != null ? entry.overdrive : false,
-                entry != null ? entry.stacks : false,
-                entry != null ? entry.passiveRate : 0.0
-            );
-            if (entry != null) {
-                ModChargeData.setMechanisms(stack, entry.overdrive, entry.stacks,
-                    entry.passiveRate > 0.0, entry.passiveRate);
-                // 如果允许 stacks，设置最大层数
-                if (entry.stacks) {
-                    ModChargeData.setMaxStacks(stack,
-                        com.zzdzt.arcanemag.config.ArcaneMagConfig.CHARGE_MAX_STACKS.get());
-                } else {
-                    ModChargeData.setMaxStacks(stack, 0);
-                }
-            } else {
-                // 未在白名单中，全部禁用
-                ModChargeData.setMechanisms(stack, false, false, false, 0.0);
-                ModChargeData.setMaxStacks(stack, 0);
-            }
         } catch (Exception e) {
             com.zzdzt.arcanemag.ArcaneMag.LOGGER.warn(
-                "[ArcaneMag] Failed to calculate charge max for spell {}: {}", 
+                "[ArcaneMag] Failed to calculate charge max for spell {}: {}",
                 spell.getSpellName(), e.getMessage()
             );
         }

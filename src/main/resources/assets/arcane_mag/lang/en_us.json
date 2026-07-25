@@ -24,6 +24,10 @@
   "tooltip.arcane_mag.magazine_type": "§a[Magazine] Spell inscribable",
   "tooltip.arcane_mag.attachment_type": "§7[%s] Upgrade only",
   "tooltip.arcane_mag.upgrades_title": "=== Applied Bonuses ===",
+  "tooltip.arcane_mag.orb_entry": "  • %s +%s%%",
+  "tooltip.arcane_mag.orb_total": "  [%s orbs total]",
+
+  "message.arcane_mag.insufficient_charge": "Insufficient Charge",
 
   "jei.arcane_mag.arcane_anvil.title": "Arcane Anvil",
   "jei.arcane_mag.spell_inscribe.hint": "Any spell scroll",
@@ -124,5 +128,54 @@
   "spell.arcane_mag.frost_imbued_bullet.effect": "Freeze target for %ss",
 
   "spell.arcane_mag.imbued_bullet.info.conversion": "Damage Ratio: %s%%",
-  "spell.arcane_mag.info.duration": "Duration: %ss"
+  "spell.arcane_mag.info.duration": "Duration: %ss",
+
+  "enchantment.arcane_mag.auto_release": "Auto Release",
+  "enchantment.arcane_mag.charge_stacks": "Charge Stacks",
+  "enchantment.arcane_mag.charge_overdrive": "Overdrive",
+  "enchantment.arcane_mag.charge_passive": "Passive Charging",
+  "enchantment.arcane_mag.ammo_retention": "Ammo Retention",
+  "enchantment.arcane_mag.arcane_focus": "Arcane Focus",
+  "enchantment.arcane_mag.multi_trigger": "Multi Trigger",
+  "enchantment.arcane_mag.mana_magazine": "Mana Magazine",
+  "enchantment.arcane_mag.kuang_yan": "Frenzy Feast",
+  "enchantment.arcane_mag.overflow": "Overflow",
+  "enchantment.arcane_mag.for_the_people": "For The People",
+  "enchantment.arcane_mag.dry_mana_frenzy": "Dry Mana Frenzy",
+  "enchantment.arcane_mag.shadow_reload": "Shadow Reload",
+  "enchantment.arcane_mag.mana_hawk_eye": "Mana Hawk Eye",
+  "enchantment.arcane_mag.guidance_amplify": "Guidance Amplify",
+  "enchantment.arcane_mag.spell_resonance": "Spell Resonance",
+  "enchantment.arcane_mag.fire_frenzy": "Fire Frenzy",
+  "enchantment.arcane_mag.arcane_frenzy": "Arcane Frenzy",
+  "enchantment.arcane_mag.pellet_burst": "Pellet Burst",
+  "enchantment.arcane_mag.brace": "Brace",
+  "enchantment.arcane_mag.unstable_charge": "Unstable Charge",
+
+  "enchantment.arcane_mag.auto_release.desc": "When magazine charge is full and you hit an entity, automatically releases the inscribed spell targeting that entity.",
+  "enchantment.arcane_mag.charge_stacks.desc": "After charge is full, continued hits convert overflow charge into extra cast stacks. Magazine only.",
+  "enchantment.arcane_mag.charge_overdrive.desc": "After charge is full, continued hits accumulate overflow. Upon reaching threshold, enters Overdrive: next spell cast gains spell power bonus. Magazine only.",
+  "enchantment.arcane_mag.charge_passive.desc": "Slowly recovers charge over time while holding the gun, no damage required. Magazine only.",
+  "enchantment.arcane_mag.ammo_retention.desc": "Chance to not consume ammo on attack. Higher level = higher retention chance.",
+  "enchantment.arcane_mag.arcane_focus.desc": "After casting a spell with a gun, the next bullets gain increased headshot multiplier. Higher level = more enhanced bullets.",
+  "enchantment.arcane_mag.multi_trigger.desc": "Each trigger pull fires additional shots. Muzzle only.",
+  "enchantment.arcane_mag.mana_magazine.desc": "When magazine is empty, pay mana to continue shooting without reloading. Magazine only.",
+  "enchantment.arcane_mag.kuang_yan.desc": "Headshot kills restore a portion of mana.",
+  "enchantment.arcane_mag.overflow.desc": "When magazine spell charge is full, the gun gains damage and fire rate bonuses for 10 seconds or until the spell is cast.",
+  "enchantment.arcane_mag.for_the_people.desc": "After headshotting 3 different enemies within 6 seconds, gain spell power bonus for 10 seconds (refreshable).",
+  "enchantment.arcane_mag.dry_mana_frenzy.desc": "When mana stays low, gain damage and fire rate bonuses.",
+  "enchantment.arcane_mag.shadow_reload.desc": "Gain True Invisibility when reloading. Magazine only.",
+  "enchantment.arcane_mag.mana_hawk_eye.desc": "While aiming, consumes mana to accumulate shooting damage bonus (capped). Resets when stop aiming. Scope only.",
+  "enchantment.arcane_mag.guidance_amplify.desc": "While channeling a continuous spell, the gun gains damage and fire rate bonuses.",
+  "enchantment.arcane_mag.spell_resonance.desc": "Bullets deal additional damage based on enchantment level and magazine spell level. Muzzle only.",
+  "enchantment.arcane_mag.fire_frenzy.desc": "After 12s of continuous combat, gun damage increases. Removed if no combat action for 3s. Muzzle only.",
+  "enchantment.arcane_mag.arcane_frenzy.desc": "After 12s of continuous combat, spell power increases. Removed if no combat action for 3s. Muzzle only.",
+  "enchantment.arcane_mag.pellet_burst.desc": "After accumulating enough hits, consumes half of current magazine spell charge to deal area damage around the hit target. Higher level = lower hit threshold. Muzzle only.",
+  "enchantment.arcane_mag.brace.desc": "After 3s of non-combat, accumulates dual stacks. Gun attacks consume gun stacks for damage bonus, spell casts consume spell stacks for spell power bonus. Switching weapons clears all stacks. Stock only.",
+  "enchantment.arcane_mag.unstable_charge.desc": "Charge gain from hits is randomized. Magazine only.",
+
+  "uei.category.arcane_perk": "Gun Attachments",
+
+  "blank_key": "Placeholder"
+
 }

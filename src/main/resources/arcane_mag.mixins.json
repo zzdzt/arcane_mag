@@ -6,11 +6,19 @@
   "refmap": "arcane_mag.refmap.json",
   "mixins": [
     "ArcaneAnvilMenuMixin",
+    "AmmoRetentionMixin",
     "AttachmentPropertyManagerMixin",
+    "EntityKineticBulletHitMixin",
+    "manamagazine.ManaMagazineMixin",
+    "manamagazine.ManaMagazineScriptMixin",
+    "manamagazine.ManaMagazineServerBoltMixin",
+    "MultiTriggerMixin",
     "PreCastTargetHelperMixin",
     "SpellManaCostMixin"
   ],
   "client": [
+    "manamagazine.ManaMagazineBoltClientMixin",
+    "manamagazine.ManaMagazineClientMixin",
     "SpellBarOverlayMixin"
   ],
   "injectors": {

@@ -109,8 +109,8 @@ public class InkZapParticle extends TextureSheetParticle {
         
         if (distance < 0.1) return;
         
-        // 更多 segments，更曲折
-        int segments = (int) (distance / 2.5 + randomSource.nextIntBetweenInclusive(2, 4));
+        // 限制分段数量，以防止在极端距离下发生 BufferBuilder 溢出
+        int segments = (int) Math.min(distance / 2.5 + randomSource.nextIntBetweenInclusive(2, 4), 256);
         double distancePerSegment = distance / segments;
         Vec3 direction = end.normalize();
 

@@ -135,7 +135,22 @@ public class EnderImbuedBulletSpell extends ImbuedBulletSpell {
             pullChance = Math.min(pullChance, 1.0f); // 限制最大 100% 概率
 
             if (level.random.nextFloat() < pullChance) {
-                applyGravityPull(level, caster, target, spellLevel);
+                Vec3 hitPos = target.position().add(0, target.getBbHeight() * 0.5, 0);
+                applyGravityPull(level, caster, hitPos, spellLevel);
+            }
+        }
+
+        @Override
+        public void onHitBlock(ServerPlayer caster, Vec3 hitPos, float gunDamage, int spellLevel) {
+            ServerLevel level = (ServerLevel) caster.level();
+
+            // 同概率触发引力牵引（以方块命中点为中心）
+            float spellPower = getEntityPowerMultiplier(caster);
+            float pullChance = BASE_PULL_CHANCE + ((spellPower - 1.0f) * CHANCE_PER_SPELLPOWER);
+            pullChance = Math.min(pullChance, 1.0f);
+
+            if (level.random.nextFloat() < pullChance) {
+                applyGravityPull(level, caster, hitPos, spellLevel);
             }
         }
 
@@ -156,9 +171,7 @@ public class EnderImbuedBulletSpell extends ImbuedBulletSpell {
         }
 
         private void applyGravityPull(ServerLevel level, ServerPlayer caster,
-                                      LivingEntity target, int spellLevel) {
-            Vec3 hitPos = target.position().add(0, target.getBbHeight() * 0.5, 0);
-
+                                      Vec3 hitPos, int spellLevel) {
             float pullRadius = BASE_PULL_RADIUS + spellLevel * PULL_RADIUS_PER_LEVEL;
             double pullRadiusSq = pullRadius * pullRadius;
             float pullStrength = BASE_PULL_STRENGTH + spellLevel * PULL_STRENGTH_PER_LEVEL;
@@ -170,8 +183,7 @@ public class EnderImbuedBulletSpell extends ImbuedBulletSpell {
 
             List<LivingEntity> nearby = level.getEntitiesOfClass(
                     LivingEntity.class, searchBox,
-                    e -> e != target
-                            && e != caster
+                    e -> e != caster
                             && e.isAlive()
                             && CombatTools.isValidCombatTarget(e, caster)
                             && e.distanceToSqr(hitPos) <= pullRadiusSq

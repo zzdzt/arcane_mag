@@ -10,9 +10,13 @@ import com.zzdzt.arcanemag.utils.AttachmentDataUtils;
 import com.zzdzt.arcanemag.utils.MagazineSpellHelper;
 import com.zzdzt.arcanemag.utils.UpgradeOrbType;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
+import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
+import io.redspace.ironsspellbooks.util.TooltipsUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,28 +52,38 @@ public class ArcaneTooltipHandler {
 
         // 法术信息
         SpellData spellData = MagazineSpellHelper.extractSpell(gunStack);
-        if (spellData != null) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tooltip.arcane_mag.gun_spell_header")
-                .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD));
-
+        if (spellData != null && event.getEntity() instanceof LocalPlayer player) {
             AbstractSpell spell = spellData.getSpell();
-            int level = spellData.getLevel();
+            int spellLevel = spell.getLevelFor(spellData.getLevel(), player);
 
-            tooltip.add(Component.translatable("tooltip.arcane_mag.spell_name")
-                .append(": ")
-                .append(spell.getDisplayName(event.getEntity()).copy().withStyle(ChatFormatting.GREEN)));
+            // 标题行：法术名 + 等级（学派颜色）
+            tooltip.add(Component.empty());
+            tooltip.add(TooltipsUtils.getTitleComponent(spellData, player));
 
-            tooltip.add(Component.translatable("tooltip.arcane_mag.spell_level")
-                .append(": ")
-                .append(Component.literal(String.valueOf(level)).withStyle(ChatFormatting.GOLD)));
+            // 法术专属描述
+            spell.getUniqueInfo(spellLevel, player).forEach(line ->
+                tooltip.add(Component.literal(" ").append(
+                    line.withStyle(TooltipsUtils.getStyleFor(player, spell)))));
 
-            float manaCost = spell.getManaCost(level) 
-                * ArcaneMagConfig.MANA_COST_MULTIPLIER.get().floatValue();
-            tooltip.add(Component.translatable("tooltip.arcane_mag.mana_cost")
-                .append(": ")
-                .append(Component.literal(String.format("%.0f", manaCost)).withStyle(ChatFormatting.AQUA)));
+            // 施法时间（非瞬发时显示）
+            if (spell.getCastType() != io.redspace.ironsspellbooks.api.spells.CastType.INSTANT) {
+                String castTime = io.redspace.ironsspellbooks.api.util.Utils.timeFromTicks(
+                    spell.getEffectiveCastTime(spellLevel, player), 2);
+                tooltip.add(Component.literal(" ").append(
+                    TooltipsUtils.getCastTimeComponent(spell.getCastType(), castTime)
+                        .withStyle(ChatFormatting.BLUE)));
+            }
 
+            // 蓝耗（乘以 ArcaneMag 折扣系数）
+            int rawCost = spell.getManaCost(spellLevel);
+            if (rawCost > 0) {
+                int actualCost = Math.round(rawCost
+                    * ArcaneMagConfig.MANA_COST_MULTIPLIER.get().floatValue());
+                tooltip.add(TooltipsUtils.getManaCostComponent(spell.getCastType(), actualCost)
+                    .withStyle(ChatFormatting.BLUE));
+            }
+
+            // ArcaneMag 专属：施法按键提示
             tooltip.add(Component.translatable("tooltip.arcane_mag.cast_hint", getCastKeyName())
                 .withStyle(ChatFormatting.YELLOW, ChatFormatting.ITALIC));
         }
@@ -84,13 +98,13 @@ public class ArcaneTooltipHandler {
             orbs.forEach((type, count) -> {
                 int percent = (int)(count * ArcaneMagConfig.ORB_SPELL_POWER_BONUS.get() * 100);
                 String typeName = Component.translatable(type.getTranslationKey()).getString();
-                tooltip.add(Component.literal("  • ")
-                    .append(Component.literal(typeName).withStyle(ChatFormatting.YELLOW))
-                    .append(Component.literal(" +" + percent + "%").withStyle(ChatFormatting.GREEN)));
+                tooltip.add(Component.translatable("tooltip.arcane_mag.orb_entry",
+                    Component.literal(typeName).withStyle(ChatFormatting.YELLOW),
+                    Component.literal(String.valueOf(percent)).withStyle(ChatFormatting.GREEN)));
             });
 
             int total = MagazineSpellHelper.getTotalUpgradeOrbCount(gunStack);
-            tooltip.add(Component.literal("  [Total: " + total + " orbs]")
+            tooltip.add(Component.translatable("tooltip.arcane_mag.orb_total", total)
                 .withStyle(ChatFormatting.DARK_GRAY));
         }
     }
@@ -105,7 +119,7 @@ public class ArcaneTooltipHandler {
                 .withStyle(ChatFormatting.GREEN));
         } else if (type != null) {
             tooltip.add(Component.translatable("tooltip.arcane_mag.attachment_type",
-                    Component.translatable("attachment_type.tacz." + type.name().toLowerCase()))
+                    Component.translatable("tooltip.tacz.attachment." + type.name().toLowerCase()))
                 .withStyle(ChatFormatting.GRAY));
         }
 
@@ -120,9 +134,9 @@ public class ArcaneTooltipHandler {
             orbs.forEach((orbType, count) -> {
                 int percent = (int)(count * ArcaneMagConfig.ORB_SPELL_POWER_BONUS.get() * 100);
                 String typeName = Component.translatable(orbType.getTranslationKey()).getString();
-                tooltip.add(Component.literal("  • ")
-                    .append(Component.literal(typeName).withStyle(ChatFormatting.YELLOW))
-                    .append(Component.literal(" +" + percent + "%").withStyle(ChatFormatting.GREEN)));
+                tooltip.add(Component.translatable("tooltip.arcane_mag.orb_entry",
+                    Component.literal(typeName).withStyle(ChatFormatting.YELLOW),
+                    Component.literal(String.valueOf(percent)).withStyle(ChatFormatting.GREEN)));
             });
         }
     }

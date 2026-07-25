@@ -3,6 +3,7 @@ package com.zzdzt.arcanemag.spell.imbuedbullet;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * 注魔子弹学派特效处理器接口。
@@ -22,6 +23,9 @@ public interface ImbuedBulletEffectProcessor {
 
     //命中时的核心效果
     void onHit(ServerPlayer caster, LivingEntity target, float spellDamage, int spellLevel);
+
+    //命中方块时的效果（默认空实现，子类按需覆盖）
+    default void onHitBlock(ServerPlayer caster, Vec3 hitPos, float gunDamage, int spellLevel) {}
 
     //持续期间的效果（可选，每tick调用）
     default void onTick(ServerPlayer caster, int spellLevel) {}
