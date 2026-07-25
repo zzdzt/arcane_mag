@@ -5,6 +5,7 @@ import com.zzdzt.arcanemag.config.ArcaneMagConfig;
 import com.zzdzt.arcanemag.network.ArcaneMagNetworking;
 import com.zzdzt.arcanemag.registry.CreativeTabRegistry;
 import com.zzdzt.arcanemag.registry.EffectRegistry;
+import com.zzdzt.arcanemag.registry.EnchantmentRegistry;
 import com.zzdzt.arcanemag.registry.EntityRegistry;
 import com.zzdzt.arcanemag.registry.ItemRegistry;
 import com.zzdzt.arcanemag.registry.SpellRegistry;
@@ -32,7 +33,6 @@ public class ArcaneMag {
 
         // 注册配置
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ArcaneMagConfig.SERVER_SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ArcaneMagConfig.CLIENT_SPEC);
 
         // 注册网络
         ArcaneMagNetworking.register();
@@ -48,6 +48,9 @@ public class ArcaneMag {
 
         // 注册物品
         ItemRegistry.register(modEventBus);
+
+        // 注册附魔（Perk）
+        EnchantmentRegistry.register(modEventBus);
 
         // 注册创造模式物品栏
         CreativeTabRegistry.register(modEventBus);

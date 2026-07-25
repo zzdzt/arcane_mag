@@ -49,10 +49,14 @@ public class NatureImbuedBulletSpell extends ImbuedBulletSpell {
     private static final float BASE_EFFECT_CHANCE = 0.20f;
     private static final float CHANCE_PER_SPELLPOWER = 0.10f;
 
-    // 毒云参数
+    // 毒云参数（命中实体路径）
     private static final float POISON_CLOUD_DAMAGE_MULTIPLIER = 0.10f;
-    private static final int POISON_CLOUD_DURATION_SECONDS = 30 * 1;// 20 * 1.5
+    private static final int POISON_CLOUD_DURATION_TICKS = 30; // 1.5 秒
     private static final int POISON_EFFECT_DURATION_SECONDS = 5;
+
+    // 毒云参数（命中方块路径，独立配置：伤害更高、持续更久以补偿命中点可能远离怪物）
+    private static final float BLOCK_CLOUD_DAMAGE_MULTIPLIER = 0.30f;
+    private static final int BLOCK_CLOUD_DURATION_TICKS = 60; // 3 秒
 
     // 枯萎参数（固定值，不随等级变化）
     private static final int BLIGHT_DURATION_SECONDS = 5;
@@ -140,10 +144,34 @@ public class NatureImbuedBulletSpell extends ImbuedBulletSpell {
             boolean isPoison = level.random.nextBoolean();
 
             if (isPoison) {
-                applyPoisonSplash(level, caster, target, spellLevel, spellDamage);
+                Vec3 hitPos = target.position().add(0, 0.1, 0);
+                applyPoisonSplash(level, caster, hitPos, spellLevel,
+                        POISON_CLOUD_DAMAGE_MULTIPLIER, POISON_CLOUD_DURATION_TICKS);
+                // 命中实体时额外施加直接中毒效果
+                target.addEffect(new MobEffectInstance(
+                        net.minecraft.world.effect.MobEffects.POISON,
+                        POISON_EFFECT_DURATION_SECONDS * 20,
+                        Math.min(spellLevel - 1, 2),
+                        false, false, true
+                ));
             } else {
                 applyBlight(level, caster, target, spellLevel);
             }
+        }
+
+        @Override
+        public void onHitBlock(ServerPlayer caster, Vec3 hitPos, float gunDamage, int spellLevel) {
+            ServerLevel level = (ServerLevel) caster.level();
+
+            // 同概率触发，但命中方块只触发毒云（不触发枯萎）
+            float effectChance = getEffectChance(spellLevel, caster);
+            if (level.random.nextFloat() >= effectChance) {
+                return;
+            }
+
+            // 命中方块路径：独立参数，单次伤害更高、持续更久
+            applyPoisonSplash(level, caster, hitPos, spellLevel,
+                    BLOCK_CLOUD_DAMAGE_MULTIPLIER, BLOCK_CLOUD_DURATION_TICKS);
         }
 
         /**
@@ -155,47 +183,40 @@ public class NatureImbuedBulletSpell extends ImbuedBulletSpell {
         }
 
         /**
-         * 效果1：毒云 + 中毒
-         * 直接生成 PoisonCloud，绕过 PoisonSplash 的 0.1f 削弱
+         * 生成毒云实体。
+         * @param damageMultiplier 单次伤害 = 原始枪械伤害 × 此系数
+         * @param durationTicks    毒云持续 tick 数（AoeEntity 每 10 tick 触发一次命中检查）
          */
         private void applyPoisonSplash(ServerLevel level, ServerPlayer caster,
-                                        LivingEntity target, int spellLevel, float spellDamage) {
-            // 获取原始枪械伤害（通过基类缓存）
+                                        Vec3 hitPos, int spellLevel,
+                                        float damageMultiplier, int durationTicks) {
+            // 获取原始枪械伤害（由基类 onBulletHit / onBulletHitBlock 写入缓存）
             float originalGunDamage = getCachedGunDamage(caster);
             if (originalGunDamage <= 0) {
-                originalGunDamage = spellDamage; // fallback
+                return;
             }
 
             // 计算毒云参数
-            float cloudDamage = originalGunDamage * POISON_CLOUD_DAMAGE_MULTIPLIER;
-            int cloudDurationTicks = POISON_CLOUD_DURATION_SECONDS ;
+            float cloudDamage = originalGunDamage * damageMultiplier;
 
             PoisonCloud cloud = new PoisonCloud(level);
             cloud.setOwner(caster);
-            cloud.setDuration(cloudDurationTicks);
+            cloud.setDuration(durationTicks);
             cloud.setDamage(cloudDamage);
-            cloud.moveTo(target.position().add(0, 0.1, 0));
+            cloud.moveTo(hitPos);
             level.addFreshEntity(cloud);
-
-            // 同时给目标直接施加中毒效果
-            target.addEffect(new MobEffectInstance(
-                    net.minecraft.world.effect.MobEffects.POISON,
-                    POISON_EFFECT_DURATION_SECONDS * 20,
-                    Math.min(spellLevel - 1, 2),
-                    false, false, true
-            ));
 
             // 毒云视觉效果
             MagicManager.spawnParticles(
                     level, ParticleHelper.POISON_CLOUD,
-                    target.getX(), target.getY() + 0.5, target.getZ(),
+                    hitPos.x, hitPos.y + 0.5, hitPos.z,
                     15,
                     1.5f, 0.3, 1.5f,
                     0.1, false
             );
             MagicManager.spawnParticles(
                     level, ParticleHelper.ACID,
-                    target.getX(), target.getY() + 0.5, target.getZ(),
+                    hitPos.x, hitPos.y + 0.5, hitPos.z,
                     20,
                     1.0f, 0.5, 1.0f,
                     0.2, false

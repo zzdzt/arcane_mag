@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.tacz.guns.entity.EntityKineticBullet;
 import com.zzdzt.arcanemag.ArcaneMag;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -70,12 +69,9 @@ public final class ImbuedBulletEventHandler {
             return;
         }
 
-        // 获取枪械原始配置伤害
-        float gunDamage = getOriginalGunDamage(event);
-        if (gunDamage <= 0) {
-            gunDamage = event.getBaseAmount();
-        }
-
+        // 获取枪械原始伤害（来自 TACZ Pre 事件后的 baseAmount，
+        // 已包含 Pre 阶段 perk/附魔的增伤，例如 SpellResonance）
+        float gunDamage = event.getBaseAmount();
         if (gunDamage <= 0) return;
 
         // 执行注魔效果
@@ -118,25 +114,6 @@ public final class ImbuedBulletEventHandler {
         }
     }
 
-
-    private static float getOriginalGunDamage(EntityHurtByGunEvent.Post event) {
-        Entity bullet = event.getBullet();
-        if (!(bullet instanceof EntityKineticBullet kineticBullet)) {
-            return 0;
-        }
-
-        try {
-            var tag = kineticBullet.getPersistentData();
-            if (tag.contains("GunBaseDamage")) {
-                return tag.getFloat("GunBaseDamage");
-            }
-
-        } catch (Exception e) {
-            ArcaneMag.LOGGER.error("Failed to get original gun damage from bullet entity", e);
-        }
-
-        return 0;
-    }
 
     private static ImbuedBulletSpell findActiveImbuedSpell(ServerPlayer player) {
         for (var entry : com.zzdzt.arcanemag.registry.SpellRegistry.SPELLS.getEntries()) {

@@ -1,6 +1,6 @@
 package com.zzdzt.arcanemag.spell.lizhiyan;
 
-import com.zzdzt.arcanemag.event.GunHitTargetTracker;
+import com.zzdzt.arcanemag.event.enchant.GunHitTargetTracker;
 import com.zzdzt.arcanemag.registry.EntityRegistry;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;

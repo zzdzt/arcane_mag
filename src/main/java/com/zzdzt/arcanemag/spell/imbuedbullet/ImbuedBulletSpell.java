@@ -21,6 +21,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * 注魔子弹法术抽象基类
@@ -284,6 +285,23 @@ public abstract class ImbuedBulletSpell extends AbstractSpell {
      */
     protected void onPostBulletHit(ServerPlayer shooter, LivingEntity target, 
                                      float spellDamage, int spellLevel) {}
+
+    /**
+     * 子弹命中方块时的入口（由 AmmoHitBlockHandler 调用）。
+     * 不造成法术伤害（无目标），仅触发学派的方块命中特效。
+     */
+    public void onBulletHitBlock(ServerPlayer shooter, Vec3 hitPos, 
+                                  float gunDamage, int spellLevel) {
+        MobEffectInstance effectInstance = shooter.getEffect(getImbuedEffect());
+        if (effectInstance == null) return;
+
+        shooter.getPersistentData().putFloat(GUN_DAMAGE_CACHE, gunDamage);
+        try {
+            getEffectProcessor().onHitBlock(shooter, hitPos, gunDamage, spellLevel);
+        } finally {
+            shooter.getPersistentData().remove(GUN_DAMAGE_CACHE);
+        }
+    }
 
     // 工具方法 
 
