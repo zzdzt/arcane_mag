@@ -1,0 +1,59 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="arcane_mag"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+[[dependencies.arcane_mag]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="tacz"
+    mandatory=true
+    versionRange="[${tacz_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="irons_spellbooks"
+    mandatory=true
+    versionRange="[${irons_spellbooks_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="irons_lib"
+    mandatory=true
+    versionRange="[${irons_lib_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="curios"
+    mandatory=false
+    versionRange="[${curios_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag]]
+    modId="jei"
+    mandatory=false
+    versionRange="[${jei_version},)"
+    ordering="NONE"
+    side="CLIENT"

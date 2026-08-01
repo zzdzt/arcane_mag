@@ -1,0 +1,19 @@
+// core 模块：充能系统 + 铁砧 + 法球 + API + 施法基础设施
+base { archivesName = "arcane_mag-${minecraft_version}" }
+
+mixin {
+    add sourceSets.main, "arcane_mag.refmap.json"
+    config "arcane_mag.mixins.json"
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-spellbooks-n-spellbooks-855414:${irons_spellbooks_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-lib-1492763:${irons_lib_version_cf_id}")
+    implementation fg.deobf("curse.maven:curios-309927:${curios_version_cf_id}")
+
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+}

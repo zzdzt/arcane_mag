@@ -1,0 +1,45 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="arcane_mag_spell"
+version="${mod_version}"
+displayName="Arcane Mag: Spell"
+authors="${mod_authors}"
+description='''Custom spells module for Arcane Mag.'''
+
+[[dependencies.arcane_mag_spell]]
+    modId="arcane_mag"
+    mandatory=true
+    versionRange="[${mod_version},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.arcane_mag_spell]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag_spell]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag_spell]]
+    modId="tacz"
+    mandatory=true
+    versionRange="[${tacz_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.arcane_mag_spell]]
+    modId="irons_spellbooks"
+    mandatory=true
+    versionRange="[${irons_spellbooks_version},)"
+    ordering="NONE"
+    side="BOTH"

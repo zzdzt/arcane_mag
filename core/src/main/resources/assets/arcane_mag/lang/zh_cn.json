@@ -1,0 +1,37 @@
+{
+  "key.categories.arcanemag": "奥术弹匣",
+  "key.arcanemag.cast_spell": "释放法术",
+
+  "itemGroup.arcane_mag.equipment_tab": "奥术弹匣 - 装备",
+
+  "item.arcane_mag.arcane_staff": "奥术法杖",
+  "item.arcane_mag.arcane_staff.tooltip.mainhand_only": "§7仅限主手使用",
+  "item.arcane_mag.arcane_staff.tooltip.damage_bonus": "§5造成的伤害会受攻击力与法术强度加成",
+  "item.arcane_mag.arcane_staff.tooltip.gun_appearance": "又敲坏一把:D",
+
+  "item.arcane_mag.blank_heart": "空白之心",
+  "item.arcane_mag.blank_heart.tooltip.heal": "§c回复%s%%最大生命值",
+  "item.arcane_mag.blank_heart.tooltip.cooldown": "§7冷却时间: %ds",
+  "item.arcane_mag.blank_heart.tooltip.reusable": "§a可重复使用",
+  "item.arcane_mag.heart_item.tooltip.cooldowntip": "§a冷却时间受法术缩减影响",
+
+  "tooltip.arcane_mag.gun_spell_header": "=== 已注入法术 ===",
+  "tooltip.arcane_mag.spell_name": "法术",
+  "tooltip.arcane_mag.spell_level": "等级",
+  "tooltip.arcane_mag.mana_cost": "法力消耗",
+  "tooltip.arcane_mag.cast_hint": "§e§o手持枪械时按 [%s] 施放法术",
+  "tooltip.arcane_mag.gun_upgrades_header": "=== 升级法球 ===",
+  "tooltip.arcane_mag.magazine_type": "§a[弹夹] 可注入法术",
+  "tooltip.arcane_mag.attachment_type": "§7[%s] 仅可添加升级法球",
+  "tooltip.arcane_mag.upgrades_title": "=== 已适用加成 ===",
+  "tooltip.arcane_mag.orb_entry": "  • %s +%s%%",
+  "tooltip.arcane_mag.orb_total": "  [共 %s 颗法球]",
+
+  "message.arcane_mag.insufficient_charge": "充能不足",
+
+  "jei.arcane_mag.arcane_anvil.title": "奥术铁砧",
+  "jei.arcane_mag.spell_inscribe.hint": "任意法术卷轴",
+  "jei.arcane_mag.upgrade.hint": "任意升级法球",
+
+  "blank_key": "占位空键"
+}

@@ -1,0 +1,22 @@
+// spell 模块：15 法术 + 注魔子弹 + spell 乘区 + JEI
+base { archivesName = "arcane_mag_spell-${minecraft_version}" }
+
+mixin {
+    add sourceSets.main, "arcane_mag_spell.refmap.json"
+    config "arcane_mag_spell.mixins.json"
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    // 编译时依赖 core 的 API
+    compileOnly project(':core')
+
+    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:${irons_spellbooks_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-lib-1492763:${irons_lib_version_cf_id}")
+    implementation fg.deobf("curse.maven:curios-309927:${curios_version_cf_id}")
+
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+}

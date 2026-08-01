@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.zzdzt.arcanemag.enchant.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "arcane_mag_enchant.refmap.json",
+  "mixins": [
+    "AmmoRetentionMixin",
+    "MultiTriggerMixin",
+    "manamagazine.ManaMagazineMixin",
+    "manamagazine.ManaMagazineScriptMixin",
+    "manamagazine.ManaMagazineServerBoltMixin"
+  ],
+  "client": [
+    "manamagazine.ManaMagazineBoltClientMixin",
+    "manamagazine.ManaMagazineClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

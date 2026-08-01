@@ -1,0 +1,37 @@
+{
+  "key.categories.arcanemag": "ArcaneMag",
+  "key.arcanemag.cast_spell": "Cast Spell",
+
+  "itemGroup.arcane_mag.equipment_tab": "Arcane Mag - Equipment",
+
+  "item.arcane_mag.arcane_staff": "Arcane Staff",
+  "item.arcane_mag.arcane_staff.tooltip.mainhand_only": "§7Mainhand only",
+  "item.arcane_mag.arcane_staff.tooltip.damage_bonus": "§5Damage scales with Attack Damage and Spell Power",
+  "item.arcane_mag.arcane_staff.tooltip.gun_appearance": "Broke another one:D",
+
+  "item.arcane_mag.blank_heart": "Blank Heart",
+  "item.arcane_mag.blank_heart.tooltip.heal": "§cHeal %s%% max HP",
+  "item.arcane_mag.blank_heart.tooltip.cooldown": "§7Cooldown: %ds",
+  "item.arcane_mag.blank_heart.tooltip.reusable": "§aReusable",
+  "item.arcane_mag.heart_item.tooltip.cooldowntip": "§aCooldown affected by cooldown reduction",
+
+  "tooltip.arcane_mag.gun_spell_header": "=== Imbued Spell ===",
+  "tooltip.arcane_mag.spell_name": "Spell",
+  "tooltip.arcane_mag.spell_level": "Level",
+  "tooltip.arcane_mag.mana_cost": "Mana Cost",
+  "tooltip.arcane_mag.cast_hint": "§e§oPress [%s] while holding a gun to cast",
+  "tooltip.arcane_mag.gun_upgrades_header": "=== Upgrade Orbs ===",
+  "tooltip.arcane_mag.magazine_type": "§a[Magazine] Spell inscribable",
+  "tooltip.arcane_mag.attachment_type": "§7[%s] Upgrade only",
+  "tooltip.arcane_mag.upgrades_title": "=== Applied Bonuses ===",
+  "tooltip.arcane_mag.orb_entry": "  • %s +%s%%",
+  "tooltip.arcane_mag.orb_total": "  [%s orbs total]",
+
+  "message.arcane_mag.insufficient_charge": "Insufficient Charge",
+
+  "jei.arcane_mag.arcane_anvil.title": "Arcane Anvil",
+  "jei.arcane_mag.spell_inscribe.hint": "Any spell scroll",
+  "jei.arcane_mag.upgrade.hint": "Any upgrade orb",
+
+  "blank_key": "Placeholder"
+}

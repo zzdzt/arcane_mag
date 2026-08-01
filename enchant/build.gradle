@@ -1,0 +1,17 @@
+// enchant 模块：21 附魔 + 17 Handler + enchant 乘区
+base { archivesName = "arcane_mag_enchant-${minecraft_version}" }
+
+mixin {
+    add sourceSets.main, "arcane_mag_enchant.refmap.json"
+    config "arcane_mag_enchant.mixins.json"
+}
+
+dependencies {
+    // 编译时依赖 core 的 API
+    compileOnly project(':core')
+
+    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:${irons_spellbooks_version_cf_id}")
+    implementation fg.deobf("curse.maven:irons-lib-1492763:${irons_lib_version_cf_id}")
+    implementation fg.deobf("curse.maven:curios-309927:${curios_version_cf_id}")
+}
